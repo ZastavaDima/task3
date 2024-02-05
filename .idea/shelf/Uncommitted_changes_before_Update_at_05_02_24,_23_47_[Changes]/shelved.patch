@@ -1,0 +1,60 @@
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n\n    <groupId>org.example</groupId>\n    <artifactId>task3</artifactId>\n    <version>1.0-SNAPSHOT</version>\n\n    <properties>\n        <maven.compiler.source>21</maven.compiler.source>\n        <maven.compiler.target>21</maven.compiler.target>\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n    </properties>\n    <dependencies>\n        <dependency>\n            <groupId>org.junit.jupiter</groupId>\n            <artifactId>junit-jupiter</artifactId>\n            <version>RELEASE</version>\n            <scope>test</scope>\n        </dependency>\n    </dependencies>\n\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	
++++ b/pom.xml	
+@@ -21,5 +21,47 @@
+             <scope>test</scope>
+         </dependency>
+     </dependencies>
+-
++    <build>
++        <plugins>
++            <plugin>
++                <artifactId>maven-surefire-plugin</artifactId>
++                <!-- latest version (2.20.1) does not work well with JUnit5 -->
++                <version>2.19.1</version>
++                <dependencies>
++                    <dependency>
++                        <groupId>org.junit.platform</groupId>
++                        <artifactId>junit-platform-surefire-provider</artifactId>
++                        <version>1.0.3</version>
++                    </dependency>
++                    <dependency>
++                        <groupId>org.junit.jupiter</groupId>
++                        <artifactId>junit-jupiter-engine</artifactId>
++                        <version>5.0.3</version>
++                    </dependency>
++                </dependencies>
++            </plugin>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-shade-plugin</artifactId>
++                <version>3.4.1</version>
++                <executions>
++                    <!-- Run shade goal on package phase -->
++                    <execution>
++                        <phase>package</phase>
++                        <goals>
++                            <goal>shade</goal>
++                        </goals>
++                        <configuration>
++                            <transformers>
++                                <!-- add Main-Class to manifest file -->
++                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
++                                    <mainClass>TitlesFrame</mainClass>
++                                </transformer>
++                            </transformers>
++                        </configuration>
++                    </execution>
++                </executions>
++            </plugin>
++        </plugins>
++    </build>
+ </project>
+\ No newline at end of file
